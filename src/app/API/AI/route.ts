@@ -26,4 +26,13 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const err = await response.text();
-      return NextResp
+      return NextResponse.json({ error: err }, { status: response.status });
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error("AI route error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
