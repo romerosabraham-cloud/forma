@@ -25,62 +25,42 @@ const W_WEIGHT = [{w:"S1",v:82.5},{w:"S2",v:82.1},{w:"S3",v:81.6},{w:"S4",v:81.0
 
 // ─── LANDING PAGE ─────────────────────────────────────────────
 function LandingPage() {
+  const [showLogin, setShowLogin] = useState(false);
   return (
-    <div style={{minHeight:"100vh",background:"#080B08",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 6%",gap:40}}>
-
-      {/* Features lado izquierdo */}
-      <div style={{flex:1,maxWidth:520}}>
-        <div style={{fontFamily:"Arial Black,sans-serif",fontSize:58,fontWeight:900,color:C.accent,letterSpacing:10,lineHeight:1,marginBottom:6}}>FORMA</div>
-        <div style={{color:C.muted,fontSize:12,letterSpacing:4,marginBottom:48,textTransform:"uppercase" as const}}>Tu cuerpo · Tus datos · Tu progreso</div>
-
-        <div style={{display:"flex",flexDirection:"column",gap:26}}>
-          {[
-            {e:"📊",t:"Analytics de dispositivo",d:"Pasos, calorías, ritmo cardíaco y sueño recogidos automáticamente de tu teléfono"},
-            {e:"🧠",t:"Coach IA personal",d:"Análisis y planes personalizados basados en tus métricas diarias con IA avanzada"},
-            {e:"📈",t:"Tendencias corporales",d:"Seguimiento de peso, composición y medidas con gráficas de progreso"},
-            {e:"🔥",t:"Planes adaptativos",d:"Entrenamientos y nutrición que evolucionan contigo semana a semana"},
-          ].map(f=>(
-            <div key={f.t} style={{display:"flex",gap:16,alignItems:"flex-start"}}>
-              <div style={{width:46,height:46,borderRadius:12,background:C.card,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{f.e}</div>
-              <div>
-                <div style={{fontWeight:700,fontSize:15,color:C.text,marginBottom:4}}>{f.t}</div>
-                <div style={{fontSize:13,color:C.muted,lineHeight:1.65}}>{f.d}</div>
-              </div>
+    <div style={{position:"relative",minHeight:"100vh"}}>
+      {/* Splash original */}
+      <div style={{minHeight:"100vh",background:`radial-gradient(ellipse at 50% -5%, #C8FF451A 0%, #080B08 65%)`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:32,gap:44}}>
+        <div style={{textAlign:"center"}}>
+          <div style={{fontFamily:"Arial Black,sans-serif",fontSize:78,fontWeight:900,color:"#C8FF45",letterSpacing:10,lineHeight:1}}>FORMA</div>
+          <div style={{color:"#5A6358",fontSize:13,letterSpacing:4,marginTop:8,textTransform:"uppercase" as const}}>Tu cuerpo · Tus datos · Tu progreso</div>
+        </div>
+        <div style={{display:"flex",gap:14,width:"100%",maxWidth:320}}>
+          {[["📊","Analíticas\nde dispositivo"],["🏃","Seguimiento\nen tiempo real"],["🧠","Coach IA\npersonal"]].map(([e,t],i)=>(
+            <div key={i} style={{flex:1,background:"#101410",border:"1px solid #1E241E",borderRadius:18,padding:"18px 10px",textAlign:"center",display:"flex",flexDirection:"column",gap:8}}>
+              <div style={{fontSize:26}}>{e}</div>
+              <div style={{fontSize:11,color:"#5A6358",lineHeight:1.5,whiteSpace:"pre-line" as const}}>{t}</div>
             </div>
           ))}
         </div>
-
-        <div style={{marginTop:44,display:"flex",gap:12}}>
-          {[["10k+","Usuarios"],["4.9★","Rating"],["-8kg","En 3 meses"]].map(([v,l])=>(
-            <div key={l} style={{flex:1,background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"14px 16px",textAlign:"center"}}>
-              <div style={{fontFamily:"monospace",fontSize:20,fontWeight:700,color:C.accent}}>{v}</div>
-              <div style={{fontSize:11,color:C.muted,marginTop:3}}>{l}</div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{marginTop:24,padding:"14px 18px",background:"#0C1A04",border:`1px solid ${C.accent}30`,borderRadius:14}}>
-          <div style={{fontSize:13,color:C.accent,fontWeight:700,marginBottom:3}}>🎁 7 días gratis de FORMA PRO</div>
-          <div style={{fontSize:12,color:C.muted}}>Sin tarjeta de crédito · Cancela cuando quieras</div>
+        <div style={{width:"100%",maxWidth:360}}>
+          <button onClick={()=>setShowLogin(true)} style={{width:"100%",background:"#C8FF45",color:"#000",border:"none",borderRadius:18,padding:"19px 24px",fontSize:17,fontWeight:800,cursor:"pointer",letterSpacing:.4}}>
+            Empezar mi transformación →
+          </button>
+          <div style={{textAlign:"center",marginTop:14,fontSize:13,color:"#5A6358"}}>Gratis · Sin tarjeta de crédito</div>
         </div>
       </div>
 
-      {/* Login lado derecho */}
-      <div style={{flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <SignIn
-          appearance={{
-            elements:{
-              rootBox:{boxShadow:`0 0 60px ${C.accent}15`,borderRadius:20},
-            }
-          }}
-          afterSignInUrl="/"
-          afterSignUpUrl="/"
-        />
-      </div>
+      {/* Modal de login */}
+      {showLogin && (
+        <div style={{position:"fixed",inset:0,background:"#00000090",zIndex:100,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setShowLogin(false)}>
+          <div onClick={e=>e.stopPropagation()} style={{borderRadius:20,overflow:"hidden"}}>
+            <SignIn afterSignInUrl="/" afterSignUpUrl="/"/>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
 // ─── COMPONENTES DEL APP ──────────────────────────────────────
 function Ring({ pct, color, size=88, stroke=8, children }: any) {
   const r = (size-stroke)/2, circ = 2*Math.PI*r, dash = circ*Math.min(pct,1);
