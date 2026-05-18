@@ -1,5 +1,7 @@
 "use client";
 
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import {
   AreaChart, Area, BarChart, Bar, LineChart, Line,
